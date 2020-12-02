@@ -25,7 +25,7 @@ public class BuildRdbFile implements Function<RequestObject, ResultObject> {
 	protected S3BucketUtil s3BucketUtil;
 
 	@Autowired
-	protected SqsUtil sqsUtil;
+	protected SnsUtil snsUtil;
 
 	@Autowired
 	protected AqToNwisParmDao aqDao;
@@ -83,7 +83,7 @@ public class BuildRdbFile implements Function<RequestObject, ResultObject> {
 		String suffix = locationFolderUtil.filenameDecorator(locationFolder);
 		if (!StringUtils.hasText(suffix)) {
 			mess = "Given location folder has no state entry: " + locationFolder;
-			sqsUtil.addSQSMessage("ERROR: " + mess);
+			snsUtil.publishSNSMessage("ERROR: " + mess);
 			throw new RuntimeException(mess);
 		}
 		String filename = s3BucketUtil.createFilename(suffix);
@@ -100,7 +100,7 @@ public class BuildRdbFile implements Function<RequestObject, ResultObject> {
 			// would delete all the sites in NWISWEB for a given location (IOW-728).
 			if (rdbWriter.getDataRowCount() == 0) {
 				mess = "empty RDB file created.";
-				sqsUtil.addSQSMessage("ERROR: " + mess + details);
+				snsUtil.publishSNSMessage("ERROR: " + mess + details);
 				throw new RuntimeException(mess);
 			}
 
@@ -110,10 +110,10 @@ public class BuildRdbFile implements Function<RequestObject, ResultObject> {
 			result.setMessage("Count is rows written to file: " + s3bucket.getKeyName());
 			mess = String.format("INFO: RDB file created, %d rows %s",
 					rdbWriter.getDataRowCount(), details);
-			sqsUtil.addSQSMessage(mess);
+			snsUtil.publishSNSMessage(mess);
 		} catch (Exception e) {
 			mess = "Error writing RDB file to S3: " + e.getMessage() + details;
-			sqsUtil.addSQSMessage(mess);
+			snsUtil.publishSNSMessage(mess);
 			throw new RuntimeException(mess, e);
 		}
 

@@ -99,7 +99,7 @@
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk-sqs</artifactId>
+            <artifactId>aws-java-sdk-sns</artifactId>
             <version>1.11.908</version>
         </dependency>
 
