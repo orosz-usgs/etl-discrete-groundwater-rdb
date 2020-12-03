@@ -144,7 +144,7 @@ queuePolicy:
 queueToSnsSubscription:
     Type: AWS::SNS::Subscription
     Properties:
-      Endpoint: !GetAtt logQueue.Arn
+      Endpoint: !Ref logQueue
       Protocol: sqs
       RawMessageDelivery: true
       TopicArn: arn:aws:sns:${self:provider.region}:${self:custom.accountNumber}:${self:service}-${self:provider.stage}-topic

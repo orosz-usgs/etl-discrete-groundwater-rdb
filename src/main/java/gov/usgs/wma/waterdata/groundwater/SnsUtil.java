@@ -38,7 +38,7 @@ public class SnsUtil {
 	public void publishSNSMessage(String mess) {
 		if (snsTopic != null) {
 			try {
-				PublishRequest request = new PublishRequest(mess, snsTopic.getTopicArn());
+				PublishRequest request = new PublishRequest(snsTopic.getTopicArn(), mess);
 				snsClient.publish(request);
 				System.out.println("INFO: Message published to SNS: " + mess);
 			} catch (Exception e) {
