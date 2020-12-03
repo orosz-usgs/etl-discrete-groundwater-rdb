@@ -16,7 +16,7 @@ import com.amazonaws.services.sns.model.Topic;
  */
 @Component
 public class SnsUtil {
-	private static final String TOPIC_BASE_NAME = "aqts-capture-etl-rdb";
+	private static final String TOPIC_BASE_NAME = "etl-discrete-groundwater-rdb";
 	private final AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
 	private final Topic snsTopic;
 
