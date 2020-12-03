@@ -122,7 +122,7 @@ resources:
     logQueue:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: aqts-capture-etl-rdb-log-${self:provider.stage}
+        QueueName: ${self:service}-log-${self:provider.stage}
         MessageRetentionPeriod: 1209600
         VisibilityTimeout : 180
 
@@ -144,7 +144,7 @@ queuePolicy:
 queueToSnsSubscription:
     Type: AWS::SNS::Subscription
     Properties:
-      Endpoint: !Ref logQueue
+      Endpoint: arn:aws:sqs:${self:provider.region}:${self:custom.accountNumber}:${self:service}-log-${self:provider.stage}
       Protocol: sqs
       RawMessageDelivery: true
       TopicArn: arn:aws:sns:${self:provider.region}:${self:custom.accountNumber}:${self:service}-${self:provider.stage}-topic
