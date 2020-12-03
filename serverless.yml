@@ -147,7 +147,7 @@ queueToSnsSubscription:
       Endpoint: !GetAtt logQueue.Arn
       Protocol: sqs
       RawMessageDelivery: true
-      TopicArn: !Ref ${self:service}-${self:provider.stage}-topic
+      TopicArn: arn:aws:${self:provider.region}:${self:custom.accountNumber}:${self:service}-${self:provider.stage}-topic
 
 plugins:
   - serverless-plugin-git-variables

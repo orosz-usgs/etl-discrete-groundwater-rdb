@@ -18,13 +18,14 @@ import com.amazonaws.services.sns.model.Topic;
 public class SnsUtil {
 	private static final String TOPIC_BASE_NAME = "aqts-capture-etl-rdb";
 	private final AmazonSNS snsClient = AmazonSNSClientBuilder.defaultClient();
-	private final Topic snsTopic = getSNSTopic();
+	private final Topic snsTopic;
 
 	private Properties properties;
 
 	@Autowired
 	SnsUtil(Properties properties) {
 		this.properties = properties;
+		this.snsTopic = getSNSTopic();
 	}
 
 	/**
@@ -39,6 +40,7 @@ public class SnsUtil {
 			try {
 				PublishRequest request = new PublishRequest(mess, snsTopic.getTopicArn());
 				snsClient.publish(request);
+				System.out.println("INFO: Message published to SNS: " + mess);
 			} catch (Exception e) {
 				System.err.print("Error publishing message to SNS topic: " + e.getMessage());
 				System.err.print("Message to have been sent: " + mess);
