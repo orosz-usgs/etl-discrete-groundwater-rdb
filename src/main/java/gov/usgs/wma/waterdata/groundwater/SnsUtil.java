@@ -64,6 +64,7 @@ public class SnsUtil {
 				ListTopicsResult result = snsClient.listTopics(request);
 				for (Topic topic : result.getTopics()) {
 					String arn = topic.getTopicArn();
+					System.err.println("ARN = " + arn);
 					if (arn != null && arn.contains(topicName)) {
 						snsTopic = topic;
 						break;
