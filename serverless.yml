@@ -135,7 +135,7 @@ resources:
             Statement:
               Effect: Allow
               Action: "sqs:*"
-              Resource: !GetAtt logQueue.Arn
+              Resource: '*'
               "Principal": {
                 "AWS": [
                   "${self:custom.accountNumber}"
