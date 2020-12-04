@@ -137,8 +137,8 @@ resources:
               Effect: Allow
               Action: "sqs:*"
               Resource: !GetAtt logQueue.Arn
-              Principal: -
-                - AWS:
+              Principal:
+                AWS:
                   - ${self:custom.accountNumber}
     logQueueSnsSubscription:
         Type: AWS::SNS::Subscription
