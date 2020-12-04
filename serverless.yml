@@ -139,7 +139,7 @@ resources:
               "Principal": '*'
               Condition:
                 ArnLike:
-                  aws:SourceArn: [arn:aws:*:${self:provider.region}:${self:custom.accountNumber}:*:*]
+                  aws:SourceArn: ["arn:aws:*:${self:provider.region}:${self:custom.accountNumber}:*:*"]
     logQueueSnsSubscription:
         Type: AWS::SNS::Subscription
         Properties:
