@@ -134,7 +134,6 @@ resources:
           PolicyDocument:
             Statement:
               Effect: Allow
-              Principal: "*"
               Action: "sqs:*"
               Resource: !GetAtt logQueue.Arn
               "Principal": {
