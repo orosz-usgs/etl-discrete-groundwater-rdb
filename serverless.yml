@@ -136,6 +136,9 @@ resources:
               Effect: Allow
               Action: "sqs:*"
               Resource: !GetAtt logQueue.Arn
+              "Principal": {
+                "AWS": "*"
+              }
               Condition:
                 ArnLike:
                   aws:SourceArn: ["arn:aws:*:${self:provider.region}:${self:custom.accountNumber}:*:*"]
