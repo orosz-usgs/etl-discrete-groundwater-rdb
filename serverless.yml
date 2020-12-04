@@ -139,7 +139,7 @@ resources:
               Condition:
                 ArnEquals:
                   "aws:SourceArn":
-                    - Ref: snsTopic
+                    - Ref: logQueue
     logQueueSnsSubscription:
         Type: AWS::SNS::Subscription
         Properties:
