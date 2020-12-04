@@ -138,7 +138,8 @@ resources:
               Resource: "*"
               Condition:
                 ArnEquals:
-                  "aws:SourceArn": !GetAtt snsTopic.Arn
+                  "aws:SourceArn":
+                    - Ref: snsTopic
     logQueueSnsSubscription:
         Type: AWS::SNS::Subscription
         Properties:
