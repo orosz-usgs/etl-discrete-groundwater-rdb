@@ -137,9 +137,6 @@ resources:
               Effect: Allow
               Action: "sqs:*"
               Resource: !GetAtt logQueue.Arn
-              Effect: Allow
-              Action: "sqs:*"
-              Resource: !GetAtt logQueue.Arn
               Principal: '*'
               Condition:
                 ArnLike:
