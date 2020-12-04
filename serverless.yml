@@ -124,30 +124,28 @@ resources:
       Properties:
         QueueName: ${self:service}-log-${self:provider.stage}
         MessageRetentionPeriod: 1209600
-        VisibilityTimeout : 180
-
-queuePolicy:
-    Type: AWS::SQS::QueuePolicy
-    Properties:
-      Queues:
-        - !Ref logQueue
-      PolicyDocument:
-        Statement:
-          Effect: Allow
-          Principal: "*"
-          Action: "sqs:*"
-          Resource: "*"
-          Condition:
-            ArnEquals:
-              "aws:SourceArn": !Ref ${self:service}-${self:provider.stage}-topic
-
-queueToSnsSubscription:
-    Type: AWS::SNS::Subscription
-    Properties:
-      Endpoint: arn:aws:sqs:${self:provider.region}:${self:custom.accountNumber}:${self:service}-log-${self:provider.stage}
-      Protocol: sqs
-      RawMessageDelivery: true
-      TopicArn: arn:aws:sns:${self:provider.region}:${self:custom.accountNumber}:${self:service}-${self:provider.stage}-topic
+        VisibilityTimeout : 360
+    queuePolicy:
+        Type: AWS::SQS::QueuePolicy
+        Properties:
+          Queues:
+            - !Ref logQueue
+          PolicyDocument:
+            Statement:
+              Effect: Allow
+              Principal: "*"
+              Action: "sqs:*"
+              Resource: "*"
+              Condition:
+                ArnEquals:
+                  "aws:SourceArn": !Ref ${self:service}-${self:provider.stage}-topic
+    logQueueSnsSubscription:
+        Type: AWS::SNS::Subscription
+        Properties:
+          Endpoint: !GetAtt logQueue.Arn
+          Protocol: sqs
+          RawMessageDelivery: true
+          TopicArn: !GetAtt snsTopic.Arn
 
 plugins:
   - serverless-plugin-git-variables
