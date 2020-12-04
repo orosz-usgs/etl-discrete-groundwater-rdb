@@ -38,6 +38,7 @@ custom:
   observationDb:
     connectInfo: ${ssm:/aws/reference/secretsmanager/WQP-EXTERNAL-${self:provider.stage}~true}
   bucketName: iow-rdb-files
+  topicArn : arn:aws:sns:${self:provider.region}:${self:custom.accountNumber}:${self:service}-${self:provider.stage}-topic
 
 functions:
   loadRdb:
@@ -138,15 +139,14 @@ resources:
               Resource: "*"
               Condition:
                 ArnEquals:
-                  "aws:SourceArn":
-                    - Ref: logQueue
+                  "aws:SourceArn": ${self:custom.topicArn}
     logQueueSnsSubscription:
         Type: AWS::SNS::Subscription
         Properties:
           Endpoint: !GetAtt logQueue.Arn
           Protocol: sqs
           RawMessageDelivery: true
-          TopicArn: !GetAtt snsTopic.Arn
+          TopicArn: ${self:custom.topicArn}
 
 plugins:
   - serverless-plugin-git-variables
