@@ -52,6 +52,7 @@ functions:
           input:
             locationFolder: ALL
           enabled: true
+      - sns: ${self:service}-${self:provider.stage}-topic
     environment:
       FUNCTION_NAME: loadRdb
       AWS_DEPLOYMENT_REGION: ${self:provider.region}
@@ -126,6 +127,22 @@ resources:
         QueueName: ${self:service}-log-${self:provider.stage}
         MessageRetentionPeriod: 1209600
         VisibilityTimeout : 360
+    queuePolicy:
+        Type: AWS::SQS::QueuePolicy
+        Properties:
+          Queues:
+            - !Ref logQueue
+          PolicyDocument:
+            Statement:
+              Effect: Allow
+              Action: "sqs:*"
+              Resource: !GetAtt logQueue.Arn
+              "Principal":
+                "AWS":
+                  - "*"
+              Condition:
+                ArnLike:
+                  aws:SourceArn: ["arn:aws:*:${self:provider.region}:${self:custom.accountNumber}:*:*"]
     logQueueSnsSubscription:
         Type: AWS::SNS::Subscription
         Properties:
