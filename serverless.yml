@@ -44,6 +44,8 @@ functions:
   loadRdb:
     handler: gov.usgs.wma.waterdata.groundwater.BuildRdbFileHandler
     role: arn:aws:iam::${self:custom.accountNumber}:role/csr-Lambda-Role
+    onError:
+      Ref: snsTopic
     events:
       - schedule:
           name: etl-discrete-groundwater-rdb-${self:provider.stage}-event-all
@@ -52,7 +54,7 @@ functions:
           input:
             locationFolder: ALL
           enabled: true
-      - sns: ${self:service}-${self:provider.stage}-topic
+      - sns: ${topicArn}
     environment:
       FUNCTION_NAME: loadRdb
       AWS_DEPLOYMENT_REGION: ${self:provider.region}
