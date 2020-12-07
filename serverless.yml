@@ -11,7 +11,7 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - SNS:Publish
+        - SNS:*
       Resource: {"Fn::Join" : [":", ["arn:aws:sns:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "${self:service}-${self:provider.stage}-topic" ] ]  }
   deploymentBucket:
     name: iow-cloud-applications
