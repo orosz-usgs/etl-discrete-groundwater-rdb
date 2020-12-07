@@ -8,11 +8,6 @@ provider:
   memorySize: 2304
   timeout: 360
   logRetentionInDays: 90
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - SNS:*
-      Resource: {"Fn::Join" : [":", ["arn:aws:sns:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "${self:service}-${self:provider.stage}-topic" ] ]  }
   deploymentBucket:
     name: iow-cloud-applications
   stackTags:
@@ -57,8 +52,11 @@ functions:
           input:
             locationFolder: ALL
           enabled: true
-      - sns:
-        arn: ${self:custom.topicArn}
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - SNS:*
+        Resource: {"Fn::Join" : [":", ["arn:aws:sns:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "${self:service}-${self:provider.stage}-topic" ] ]  }
     environment:
       FUNCTION_NAME: loadRdb
       AWS_DEPLOYMENT_REGION: ${self:provider.region}
