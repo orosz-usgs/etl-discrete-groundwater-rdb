@@ -136,7 +136,6 @@ resources:
             Statement:
               Effect: Allow
               Action: "sqs:*"
-              Resource: !GetAtt logQueue.Arn
               Principal: '*'  # restricting this to the account, messages were not showing up
     logQueueSnsSubscription:
         Type: AWS::SNS::Subscription
