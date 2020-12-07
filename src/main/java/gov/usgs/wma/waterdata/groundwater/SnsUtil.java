@@ -60,14 +60,22 @@ public class SnsUtil {
 			try {
 				String topicName = String.format("%s-%s-topic", TOPIC_BASE_NAME, tier);
 				ListTopicsRequest request = new ListTopicsRequest();
+				boolean moreTopics = true;
 
-				ListTopicsResult result = snsClient.listTopics(request);
-				for (Topic topic : result.getTopics()) {
-					String arn = topic.getTopicArn();
-					System.err.println("ARN = " + arn);
-					if (arn != null && arn.contains(topicName)) {
-						snsTopic = topic;
-						break;
+				while (moreTopics) {
+					ListTopicsResult result = snsClient.listTopics(request);
+					for (Topic topic : result.getTopics()) {
+						String arn = topic.getTopicArn();
+						System.err.println("ARN = " + arn);
+						if (arn != null && arn.contains(topicName)) {
+							snsTopic = topic;
+							break;
+						}
+					}
+					if(snsTopic != null || result.getNextToken() == null) {
+						moreTopics = false;
+					} else {
+						request = new ListTopicsRequest(result.getNextToken());
 					}
 				}
 
