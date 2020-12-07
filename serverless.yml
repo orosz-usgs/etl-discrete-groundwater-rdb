@@ -12,7 +12,7 @@ provider:
     - Effect: Allow
       Action:
         - SNS:Publish
-      Resource: {"Fn::Join" : [":", ["arn:aws:sns:${self:custom.region}", { "Ref" : "AWS::AccountId" }, "${self:service}-${self:provider.stage}-topic" ] ]  }
+      Resource: {"Fn::Join" : [":", ["arn:aws:sns:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "${self:service}-${self:provider.stage}-topic" ] ]  }
   deploymentBucket:
     name: iow-cloud-applications
   stackTags:
