@@ -57,7 +57,8 @@ functions:
           input:
             locationFolder: ALL
           enabled: true
-      - sns: ${self:custom.topicArn}
+      - sns:
+        arn: ${self:custom.topicArn}
     environment:
       FUNCTION_NAME: loadRdb
       AWS_DEPLOYMENT_REGION: ${self:provider.region}
