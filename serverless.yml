@@ -130,6 +130,7 @@ resources:
         MessageRetentionPeriod: 1209600
         VisibilityTimeout : 360
     queuePolicy:
+        Version: '2012-10-17'
         Type: AWS::SQS::QueuePolicy
         Properties:
           Queues:
@@ -139,9 +140,7 @@ resources:
               Effect: Allow
               Action: "sqs:*"
               Resource: !GetAtt logQueue.Arn
-              Principal:
-                AWS:
-                  - "*"  # restricting this to the account, messages were not showing up
+              Principal: '*'  # restricting this to the account, messages were not showing up
     logQueueSnsSubscription:
         Type: AWS::SNS::Subscription
         Properties:
