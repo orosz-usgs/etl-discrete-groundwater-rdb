@@ -52,11 +52,8 @@ functions:
           input:
             locationFolder: ALL
           enabled: true
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - SNS:*
-        Resource: {"Fn::Join" : [":", ["arn:aws:sns:${self:provider.region}", { "Ref" : "AWS::AccountId" }, "${self:service}-${self:provider.stage}-topic" ] ]  }
+      - sqs:
+          arn: arn:aws:sqs:${self:provider.region}:${self:custom.accountNumber}:aqts-capture-etl-rdb-log-${self:provider.stage}
     environment:
       FUNCTION_NAME: loadRdb
       AWS_DEPLOYMENT_REGION: ${self:provider.region}
