@@ -2,11 +2,7 @@ service: etl-discrete-groundwater-rdb
 
 provider:
   name: aws
-  rolePermissionsBoundary:
-    Fn::Sub:
-      - "arn:aws:iam::${accountId}:policy/csr-Developer-Permissions-Boundary"
-      - accountId:
-         Ref: "AWS::AccountId"
+  rolePermissionsBoundary: arn:aws:iam::${self:custom.accountNumber}:policy/csr-Developer-Permissions-Boundary
   region: ${opt:region, 'us-west-2'}
   stage: ${opt:stage, 'TEST'}
   runtime: java11
@@ -48,11 +44,7 @@ custom:
 functions:
   loadRdb:
     handler: gov.usgs.wma.waterdata.groundwater.BuildRdbFileHandler
-    role:
-      Fn::Sub:
-        - arn:aws:iam::${accountId}:role/csr-Lambda-Role
-        - accountId:
-            Ref: AWS::AccountId
+    role: arn:aws:iam::${self:custom.accountNumber}:role/csr-Lambda-Role
     events:
       - schedule:
           name: etl-discrete-groundwater-rdb-${self:provider.stage}-event-all
@@ -138,7 +130,6 @@ resources:
         MessageRetentionPeriod: 1209600
         VisibilityTimeout : 360
     queuePolicy:
-        Version: '2012-10-17'
         Type: AWS::SQS::QueuePolicy
         Properties:
           Queues:
